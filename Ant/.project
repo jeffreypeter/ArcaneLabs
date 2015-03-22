@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>Ant</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+	</buildSpec>
+	<natures>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>build.properties</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/build.properties</locationURI>
+		</link>
+		<link>
+			<name>build.xml</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/build.xml</locationURI>
+		</link>
+		<link>
+			<name>cobertura</name>
+			<type>2</type>
+			<locationURI>PARENT-2-PROJECT_LOC/cobertura</locationURI>
+		</link>
+		<link>
+			<name>jars/ant-junit-1.8.4.jar</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/0_jars/ant/ant-junit-1.8.4.jar</locationURI>
+		</link>
+		<link>
+			<name>jars/hamcrest-all-1.3.jar</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/0_jars/ant/hamcrest-all-1.3.jar</locationURI>
+		</link>
+		<link>
+			<name>jars/junit-4.12.jar</name>
+			<type>1</type>
+			<locationURI>PARENT-2-PROJECT_LOC/0_jars/ant/junit-4.12.jar</locationURI>
+		</link>
+	</linkedResources>
+</projectDescription>
