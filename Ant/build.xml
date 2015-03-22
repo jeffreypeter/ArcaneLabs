@@ -1,0 +1,106 @@
+<project name="JUnitTesting" basedir="." default="main">
+	<property file="build.properties" />
+	
+	<path id="cobertura.classpath">
+		<fileset dir="${cobertura.dir}">
+			<include name="cobertura.jar" />
+			<include name="lib/**/*.jar" />
+		</fileset>
+	</path>
+	<path id="ant.classpath">
+		<fileset dir="${ant.lib}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+	<path id="classpath">
+        <fileset dir="${lib.dir}" includes="**/*.jar"/>
+    </path>
+	<path id="junit.classpath">
+		<pathelement location="${basedir}"/>
+		<path refid="classpath"></path>
+	</path>
+	<taskdef classpathref="cobertura.classpath" resource="tasks.properties"/>
+	<target name="init">
+		<delete dir="${build.dir}" />
+		<delete dir="${instrumented.dir}" />
+		<delete dir="${reports.xml.dir}" />
+		<mkdir dir="${instrumented.dir}" />
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${build.class}" />
+		<mkdir dir="${build.jar}" />
+		<mkdir dir="${reports.xml.dir}" />
+		<mkdir dir="${reports.html.dir}"/>
+	</target>
+	<target name="compile" depends="init">
+		<javac srcdir="${src.dir}" destdir="${build.class}" classpathref="classpath" includeantruntime="false" debug="true"/>
+		<pathconvert property="echo.path.compile" refid="ant.classpath"> </pathconvert>
+	    <echo>${echo.path.compile}</echo>
+	</target>
+	<target name="jar" >
+		
+		<jar destfile="${build.jar}/${ant.project.name}.jar" basedir="${build.class}"/>
+		<!-- <manifest>
+			<attribute name="Main-Class" value="poc.TestJUnit" />
+		</manifest> -->
+	</target>
+	
+	<target name="instrument" depends="init,compile">
+		<cobertura-instrument todir="${instrumented.dir}">
+				<fileset dir="${build.class}">
+					<include name="**/*.class" />
+					<exclude name="**/*Test.class" />
+				</fileset>
+			</cobertura-instrument>
+	</target>
+	
+	<target name="test" depends="init,compile,instrument">
+		
+		<junit fork="yes" dir="${basedir}" failureProperty="test.failed">
+			<!--
+				Note the classpath order: instrumented classes are before the
+				original (uninstrumented) classes.  This is important.
+			-->
+			<classpath location="${instrumented.dir}" />
+			<classpath location="${build.class}" />
+			<!--
+				The instrumented classes reference classes used by the
+				Cobertura runtime, so Cobertura and its dependencies
+				must be on your classpath.
+			-->
+			<classpath refid="cobertura.classpath" />
+			<classpath refid="junit.classpath"></classpath>
+			<classpath refid="ant.classpath" />
+
+			<formatter type="xml" />
+			<test name="${testcase}" todir="${reports.xml.dir}" if="testcase" />
+			<batchtest todir="${reports.xml.dir}" unless="testcase">
+				<fileset dir="${src.dir}">
+					<include name="**/*Test.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+
+		<junitreport todir="${reports.xml.dir}">
+			<fileset dir="${reports.xml.dir}">
+				<include name="TEST-*.xml" />
+			</fileset>
+			<report format="frames" todir="${reports.html.dir}" />
+		</junitreport>
+	</target>
+	<target name="coverage-check" >
+		<cobertura-check branchrate="34" totallinerate="100" />
+	</target>
+
+	<target name="coverage-report">
+		<!--
+			Generate an XML file containing the coverage data using
+			the "srcdir" attribute.
+		-->
+		<cobertura-report srcdir="${src.dir}" destdir="${coverage.xml.dir}" format="html" />
+	</target>
+	<target name="clean">
+		<delete file="cobertura.ser"></delete>
+	</target>
+	<target name ="main" depends="init,compile,instrument"/>
+	
+</project>
