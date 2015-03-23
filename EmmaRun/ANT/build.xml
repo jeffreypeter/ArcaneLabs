@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="ACATS deployment" default="init">       
+    <target name="init">
+       <echo message="Starting...."/>
+       <property name="appl" value="CatWeb"/>
+       <echo message="Copying...."/> 
+       <copy todir="../${appl}_bkup">
+   			 <fileset dir="../${appl}_deploy"> 
+   			 	 <include name="**/*.war"/>
+   			 	 <include name="**/*.zip"/>
+   			 </fileset>	
+ 	   </copy>
+       <echo message="Creating CatWeb War...."/>    
+       <war warfile="CatWeb.war" webxml="../WebContent/Web-inf/web.xml"> 
+  		<!--classes dir="../WebContent/Web-inf/classes"/-->  
+  		<webinf dir="../WebContent/Web-inf/">   			
+  			<exclude name="**/web.xml"/>  				 			
+  		</webinf> 
+  		<fileset dir="../WebContent/">	 
+  			<include name="**/*.jsp"/>
+  			<include name ="facade.htm"/>	
+  			<!--include name ="acats/folders/*"/-->	  
+    	</fileset>  									
+	   </war>
+	   <echo message="Creating Zip...."/>   
+	    <zip zipfile="CatWeb.zip">
+	    	<fileset dir="../WebContent/">
+	    		 <exclude name="**/*.jsp"/>		    		 
+	    		 <exclude name ="META-INF/**"/> 
+	    		 <exclude name ="WEB-INF/**"/>	
+	    		 <exclude name ="facade.htm"/>
+	    		 <!--exclude name ="nonacats/**"/-->
+	    		 <!--exclude name ="acats/folders/*"/-->	  	    	    		      		 		
+    		</fileset> 
+ 		 </zip>
+ 		<echo message="Moving to deployment Folder...."/>    
+ 		<move todir="../${appl}_deploy">
+   			 <fileset dir=".">
+   			 	 <include name="**/*.war"/>
+   			 	 <include name="**/*.zip"/>
+   			 </fileset>	
+ 	   </move> 
+		
+       <echo message="Completed...."/>      
+    </target>   
+</project>

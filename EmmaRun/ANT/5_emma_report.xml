@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!-- ============= build file for ANT v1.x [requires v1.4+] ========= -->
+
+<project name="EMMA offline (report)" default="all" basedir=".." >
+
+  <target name="all" depends="run" />
+
+  <property name="in.dir" value="${basedir}/WebContent/WEB-INF/emma_classes/" />
+   
+  <property name="emma.dir" value="${basedir}/" />
+  
+  <property name="instr.dir" value="${basedir}/WebContent/WEB-INF/emma_instr_classes/" />
+  
+  <property name="coverage.dir" value="${basedir}/WebContent/coverage" />
+  
+  <property name="emma.enabled" value="true" />
+  
+  <path id="emma.lib" >
+    <pathelement location="${emma.dir}/emma.jar" />
+    <pathelement location="${emma.dir}/emma_ant.jar" />
+  </path>
+
+  <taskdef name="report" classname="com.vladium.emma.report.reportTask"/>
+  
+
+<target name="run" description="build report" >
+    <emma enabled="${emma.enabled}" >
+      <report>
+       <infileset dir="${coverage.dir}" includes="*.em, *.ec" />
+        <sourcepath>
+          <dirset dir="${basedir}" >
+            <include name="**/JavaSource" /> 
+          </dirset>
+        </sourcepath>
+        <html outfile="${coverage.dir}/index.html"
+              columns="name, method, line"
+              sort="+line, +name"
+              metrics="line:80"
+        />
+      </report>
+    </emma>
+  </target>
+</project>
+<!-- ========= END OF FILE ========================================== -->
+
+
+

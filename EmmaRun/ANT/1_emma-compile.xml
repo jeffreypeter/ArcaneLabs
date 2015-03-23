@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ============= build file for ANT v1.x [requires v1.4+] ========= -->
+
+<project name="EMMA offline (compile)" default="all" basedir=".." >
+
+  <!-- the default target compiles and runs Main: -->
+  <target name="all" depends="compile" />
+
+  <!-- root directory for the example source code: --> 
+  <property name="src.dir" value="${basedir}/JavaSource" />
+
+  <!-- javac class output directory: -->
+  <property name="out.dir" value="${basedir}/WebContent/WEB-INF/emma_classes/" />
+
+  <!-- directory that contains emma.jar and emma_ant.jar: -->
+  <property name="emma.dir" value="${basedir}/" />
+
+
+  <!-- directory that contains other jar files: -->
+  <property name="j2ee.dir" value="C:/Program Files/IBM/Rational/SDP/6.0/runtimes/base_v51/lib" />
+
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+  <target name="clean" description="resets this demo project to a clean state" >
+    <delete dir="${out.dir}" /> 
+    <delete dir="${basedir}/outinstr" /> 
+    <delete dir="${coverage.dir}" />    
+  </target>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+  <target name="init" depends="clean">
+    <mkdir dir="${out.dir}" />
+    <path id="run.classpath" >
+      <pathelement location="${out.dir}" />
+    </path>
+  </target>
+
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+  <target name="compile" depends="init" description="compiles the example source code" >
+    <!-- compile using javac [debug="on" ensures richer EMMA reporting]: -->
+    <javac debug="on" srcdir="${src.dir}" destdir="${out.dir}" classpath="${j2ee.dir}/j2ee.jar;" />
+  </target>
+</project>
+<!-- ========= END OF FILE ========================================== -->
+
+
+

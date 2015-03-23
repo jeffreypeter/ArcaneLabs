@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!-- ============= build file for ANT v1.x [requires v1.4+] ========= -->
+
+<project name="EMMA demo (offline mode)" default="all" basedir=".." >
+
+  <!-- the default target compiles and runs Main: -->
+  <target name="all" depends="run" />
+
+  <!-- root directory for the example source code: --> 
+  <property name="src.dir" value="${basedir}/JavaSource" />
+
+  <!-- javac class output directory: -->
+  <property name="out.dir" value="${basedir}/WebContent/WEB-INF/emma_classes/" />
+
+  <!-- output directory used for EMMA coverage reports: -->
+  <property name="coverage.dir" value="${basedir}/WebContent/coverage" />
+
+  <!-- directory that contains emma.jar and emma_ant.jar: -->
+  <property name="emma.dir" value="${basedir}/" />
+
+  <!-- path element used by EMMA taskdef below: -->
+  <path id="emma.lib" >
+    <pathelement location="${emma.dir}/emma.jar" />
+    <pathelement location="${emma.dir}/emma_ant.jar" />
+  </path>
+
+  <!-- this loads <emma> and <emmajava> custom tasks: -->
+  <taskdef name="ctl" classname="com.vladium.emma.ctl.ctlTask"/>
+
+
+  <target name="run" description="runs the examples" >
+  <emma>
+    <ctl>
+      <command name="coverage.get" args="${coverage.dir}/coverage.ec" />             
+    </ctl>
+  </emma>
+  </target>
+
+</project>
+<!-- ========= END OF FILE ========================================== -->
+
+
+

@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!-- ============= build file for ANT v1.x [requires v1.4+] ========= -->
+
+<project name="EMMA offline (comple)" default="all" basedir=".." >
+
+  <!-- the default target compiles and runs Main: -->
+  <target name="all" depends="run" />
+ 
+
+ <property name="in.dir" value="${basedir}\WebContent\WEB-INF\emma_classes\" />
+   
+  <property name="emma.dir" value="${basedir}/" />
+
+
+<!-- path element used by EMMA taskdef below: -->
+  <path id="emma.lib" >
+    <pathelement location="${emma.dir}/emma.jar" />
+    <pathelement location="${emma.dir}/emma_ant.jar" />
+  </path>
+
+  <taskdef name="instr" classname="com.vladium.emma.instr.instrTask"/>
+
+  <target name="init" >
+    <mkdir dir="${in.dir}" />
+    <path id="run.classpath" >
+      <pathelement location="${in.dir}" />
+    </path>
+  </target>
+
+
+ <target name="clean" depends="init" description="resets this demo project to a clean state" >
+    <delete dir="instr.dir" /> 
+    <delete dir="${coverage.dir}" />    
+  </target>
+
+
+
+<target name="emma" depends="clean" description="turns on EMMA instrumentation" >
+    <property name="emma.enabled" value="true" />
+    <property name="instr.dir" value="${basedir}/WebContent/WEB-INF/emma_instr_classes/" />
+    <property name="coverage.dir" value="${basedir}/WebContent/coverage/" />
+    <mkdir dir="${instr.dir}" />
+    <mkdir dir="${coverage.dir}" />
+  </target>
+
+<target name="run" depends="emma" description="runs the instrumentation" >
+    <emma enabled="${emma.enabled}">
+      <instr instrpathref="run.classpath" 
+             mode="copy" 
+            destdir="${instr.dir}"
+             metadatafile="${coverage.dir}/metadata.em"
+             >
+      </instr>
+    </emma>
+  </target>
+</project>
+<!-- ========= END OF FILE ========================================== -->
+
+
+

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<project name="EMMA offline (copy files)" default="all" basedir="..">
+	<target name="all" depends="run" />
+	<property name="in.dir"
+		value="${basedir}/WebContent/WEB-INF/emma_instr_classes/" />
+	<property name="out.dir"
+		value="${basedir}/WebContent/WEB-INF/classes/" />
+	
+	<target name="clean" description="resets this demo project to a clean state" >
+    <delete dir="${out.dir}" /> 
+    <mkdir dir="${out.dir}" />
+    </target>
+	
+	<target name="run" depends="clean" description="copy class files from one directory to another">
+		<copy todir="${out.dir}">
+			<fileset dir="${in.dir}" />
+		</copy>
+	</target>
+</project>
+
+
+
