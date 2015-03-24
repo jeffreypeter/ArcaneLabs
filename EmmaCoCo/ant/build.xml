@@ -29,5 +29,12 @@
 		    <fileset dir="${class.dir}" includes="**/*.class"/>
 		</jacoco:instrument>
 	</target>
+	<war destfile="${build.dir}/${ant.project.name}.war" webxml="${web.dir}/WEB-INF/web.xml">
+		<classes dir="${instr.dir}" />
+		<fileset dir = "${web.dir}">
+	      <include name = "**/*.*"/>
+	   </fileset>
+		
+	</war>
 	<target name="main" depends="00-init,01-compile"></target>
 </project>
