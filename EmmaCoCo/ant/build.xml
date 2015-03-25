@@ -1,7 +1,11 @@
-<project xmlns:jacoco="antlib:org.jacoco.ant" name="EmmaCoCo" basedir="." default="main" >
-	
+<project name="EmmaCoCo" basedir="." default="main" >
 	<property file="build.properties"/>
-	
+	<path id="cobertura.classpath">
+			<fileset dir="${cobertura.dir}">
+				<include name="cobertura.jar" />
+				<include name="lib/**/*.jar" />
+			</fileset>
+		</path>
 	<path id="compile.classpath">
 		<fileset dir="${lib.dir}">
 			<include name="**/*.jar"/>
@@ -10,9 +14,7 @@
 			<include name="**/*.jar"/>
 		</fileset>
 	</path>
-	<taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
-			<classpath path="${lib.dir}/jacocoant.jar"/>
-	</taskdef>
+	<taskdef classpathref="cobertura.classpath" resource="tasks.properties"/>
 	<target name="00-init">
 		<delete dir="${class.dir}"/>
 		<delete dir="${instr.dir}"/>
@@ -25,9 +27,6 @@
 	</target>
 	<target name="01-compile" depends="00-init">
 		<javac srcdir="${src.dir}" destdir="${class.dir}" classpathref="compile.classpath" includeantruntime="false" debug="on"></javac>
-		<jacoco:instrument destdir="${instr.dir}">
-		    <fileset dir="${class.dir}" includes="**/*.class"/>
-		</jacoco:instrument>
 	</target>
 	<war destfile="${build.dir}/${ant.project.name}.war" webxml="${web.dir}/WEB-INF/web.xml">
 		<classes dir="${instr.dir}" />

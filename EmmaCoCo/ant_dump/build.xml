@@ -13,6 +13,5 @@
 		<classpath path="${lib.dir}/jacocoant.jar"/>
 	</taskdef>
 	<target name="dump">
-		<jacoco:dump address="localhost:8090" reset="true" destfile="remote.exec"/>
 	</target>
 </project>
