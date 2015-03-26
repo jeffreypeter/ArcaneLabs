@@ -26,14 +26,26 @@
 		<mkdir dir="${coverage.dir}"/>
 	</target>
 	<target name="01-compile" depends="00-init">
-		<javac srcdir="${src.dir}" destdir="${class.dir}" classpathref="compile.classpath" includeantruntime="false" debug="on"></javac>
+		<javac srcdir="${src.dir}" destdir="${class.dir}" classpathref="compile.classpath" includeantruntime="false" debug="true"></javac>
+		<cobertura-instrument todir="${instr.dir}">
+			<fileset dir="${class.dir}">
+				<include name="**/*.class" />
+				<exclude name="**/*Test.class" />
+			</fileset>
+		</cobertura-instrument>
+		<war destfile="${build.dir}/${ant.project.name}.war" webxml="${web.dir}/WEB-INF/web.xml">
+			<classes dir="${instr.dir}" />
+			<fileset dir = "${web.dir}">
+		      <include name = "**/*.*"/>
+		   </fileset>			
+		</war>
 	</target>
-	<war destfile="${build.dir}/${ant.project.name}.war" webxml="${web.dir}/WEB-INF/web.xml">
-		<classes dir="${instr.dir}" />
-		<fileset dir = "${web.dir}">
-	      <include name = "**/*.*"/>
-	   </fileset>
-		
-	</war>
+	<target name="02-coverage-report">
+		<!--
+			Generate an XML file containing the coverage data using
+			the "srcdir" attribute.
+		-->
+		<cobertura-report srcdir="${src.dir}" destdir="${coverage.dir}" format="html" />
+	</target>
 	<target name="main" depends="00-init,01-compile"></target>
 </project>
