@@ -36,9 +36,22 @@ public class EmmaController extends HttpServlet {
 		System.out.println("In servelet");
 		String first = request.getParameter("first");
 		String second = request.getParameter("second");
-		
+		RequestDispatcher rd;
+		if(first.equalsIgnoreCase(second)) {
+			rd = request.getRequestDispatcher("trigger.jsp");
+		} else {
+			rd = request.getRequestDispatcher("result.jsp");
+		}
+			
+		if(first.equalsIgnoreCase("jeffrey")) {
+			System.out.println("IN first loop");
+			first=second;
+		} else if (first.equalsIgnoreCase("peter")) {
+			System.out.println("IN Second Loop");
+			first=second;
+		}
 		request.setAttribute("result", first+ second);
-		RequestDispatcher rd = request.getRequestDispatcher("result.jsp");
+		
 		rd.forward(request, response);
 	}
 

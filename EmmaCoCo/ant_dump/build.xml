@@ -1,17 +1,30 @@
 <project name="EmmaCoCoDump" default="dump">
 	<property file="build.properties"/>
-		
-	<path id="compile.classpath">
-		<fileset dir="${lib.dir}">
-			<include name="**/*.jar"/>
-		</fileset>
-		<fileset dir="${extlib.dir}">
-			<include name="**/*.jar"/>
+	<path id="cobertura.classpath">
+		<fileset dir="${cobertura.dir}">
+			<include name="cobertura.jar" />
+			<include name="lib/**/*.jar" />
 		</fileset>
 	</path>
-	<taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
-		<classpath path="${lib.dir}/jacocoant.jar"/>
-	</taskdef>
-	<target name="dump">
+	<taskdef classpathref="cobertura.classpath" resource="tasks.properties"/>
+	
+	<target name="coverage-report">
+		<!--
+			Generate an XML file containing the coverage data using
+			the "srcdir" attribute.
+		-->
+		<cobertura-report srcdir="${src.dir}" destdir="${coverage.dir}" format="html" datafile="E:/Soft/Developer/apache-tomcat-7.0.59/apache-tomcat-7.0.59/bin/cobertura.ser"/>
+	</target>
+
+	<target name="summary-coverage-report">
+		<!--
+			Generate an summary XML file containing the coverage data using
+			the "srcdir" attribute.
+		-->
+		<cobertura-report srcdir="${src.dir}" destdir="${coverage.dir}" format="summaryXml" datafile="E:/Soft/Developer/apache-tomcat-7.0.59/apache-tomcat-7.0.59/bin/cobertura.ser"/>
+	</target>
+
+	<target name="dump" depends="coverage-report,summary-coverage-report">
+		
 	</target>
 </project>
