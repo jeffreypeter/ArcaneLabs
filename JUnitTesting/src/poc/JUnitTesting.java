@@ -1,5 +1,7 @@
 package poc;
 
+import jdbc.DatabaseConnection;
+
 public class JUnitTesting {
 	
 	public int testInt(int i) {
@@ -13,6 +15,10 @@ public class JUnitTesting {
 			j =-1;
 		}
 		return j;
+	}
+	public int testMock(int i) {
+		DatabaseConnection con = new DatabaseConnection();
+		return con.getData(i);
 	}
 
 }
