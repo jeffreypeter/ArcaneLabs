@@ -27,7 +27,7 @@
 	</target>
 	<target name="01-compile" depends="00-init">
 		<javac srcdir="${src.dir}" destdir="${class.dir}" classpathref="compile.classpath" includeantruntime="false" debug="true"></javac>
-		<cobertura-instrument todir="${instr.dir}" datafile="E:/Soft/Developer/apache-tomcat-7.0.59/apache-tomcat-7.0.59/bin/cobertura.ser">
+		<cobertura-instrument todir="${instr.dir}" datafile="E:/Soft/Developer/apache-tomcat-7.0.59/apache-tomcat-7.0.59/bin/cobertura.ser" >
 			<fileset dir="${class.dir}">
 				<include name="**/*.class" />
 				<exclude name="**/*Test.class" />
