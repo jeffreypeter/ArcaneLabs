@@ -23,6 +23,10 @@ public class JUnitTestingTest {
 	@Test
 	public void test3(){
 		JUnitTesting obj = new JUnitTesting();
+		
+		int result = obj.testMock(10);
+		assertEquals(100, result);
+		System.out.println("result:: "+result);
 	}
 
 }
